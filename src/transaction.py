@@ -14,7 +14,7 @@ class Transaction:
             self.vout = vin_data["vout"]
             self.prevout = self.PrevOut(vin_data["prevout"])
             self.scriptsig = vin_data["scriptsig"]
-            self.witness = vin_data["witness"]
+            self.witness = vin_data.get("witness", [])
             self.is_coinbase = vin_data["is_coinbase"]
             self.sequence = vin_data["sequence"]
 
@@ -23,7 +23,7 @@ class Transaction:
                 self.scriptpubkey = prevout_data["scriptpubkey"]
                 self.scriptpubkey_asm = prevout_data["scriptpubkey_asm"]
                 self.scriptpubkey_type = prevout_data["scriptpubkey_type"]
-                self.scriptpubkey_address = prevout_data["scriptpubkey_address"]
+                self.scriptpubkey_address = prevout_data.get("scriptpubkey_address", "")
                 self.value = prevout_data["value"]
 
     class Output:
@@ -31,5 +31,5 @@ class Transaction:
             self.scriptpubkey = vout_data["scriptpubkey"]
             self.scriptpubkey_asm = vout_data["scriptpubkey_asm"]
             self.scriptpubkey_type = vout_data["scriptpubkey_type"]
-            self.scriptpubkey_address = vout_data["scriptpubkey_address"]
+            self.scriptpubkey_address = vout_data.get("scriptpubkey_address", "") 
             self.value = vout_data["value"]
