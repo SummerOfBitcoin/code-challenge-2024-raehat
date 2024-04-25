@@ -1,13 +1,14 @@
 import os
 from collections import defaultdict
 from transaction import Transaction
-from serializeTransaction import serializedTransaction, calculate_sha256, reverse_tx_id
+from serializeTransaction import serializedTransaction, calculate_sha256, reverse_tx_id, verifyTx
 folder_path = "../mempool"
 
 def validateMempoolTransactions():
     f = True
     d = defaultdict(int)
     cnt = 0
+    pnt = 0
     ns = set()
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
@@ -23,9 +24,12 @@ def validateMempoolTransactions():
                 txId = calculate_sha256(calculate_sha256(txData))
                 sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                 if (sfilename == filename):
-                    print(cnt)
-                    cnt += 1
+                    if verifyTx(Transaction(data)):
+                        cnt += 1
+                    else:
+                        pnt += 1
 
-    print(ns)
+    print(cnt)
+    print(pnt)
 
 validateMempoolTransactions()

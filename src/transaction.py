@@ -14,6 +14,7 @@ class Transaction:
             self.vout = vin_data["vout"]
             self.prevout = self.PrevOut(vin_data["prevout"])
             self.scriptsig = vin_data["scriptsig"]
+            self.scriptsig_asm = vin_data["scriptsig_asm"]
             self.witness = vin_data.get("witness", [])
             self.is_coinbase = vin_data["is_coinbase"]
             self.sequence = vin_data["sequence"]

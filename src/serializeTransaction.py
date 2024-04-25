@@ -22,16 +22,18 @@ def serializedTransaction(transaction: Transaction):
     return rawTxData
 
 def verifyTx(transaction: Transaction):
+    ans = True
     for i in range(len(transaction.vin)):
         if (transaction.vin[i].prevout.scriptpubkey_type == "p2pkh"):
-            return verifyP2PKHTx(transaction, i)
-        else:
-            return False
+            ans = ans and not verifyP2PKHTx(transaction, i)
+
+    return not ans
+    
 
 def verifyP2PKHTx(transaction: Transaction, i):
     msg = getLegacyMessage(transaction, i)
     scriptsig_asm_list = transaction.vin[i].scriptsig_asm.split()
-    sign = scriptsig_asm_list[1]
+    sign = scriptsig_asm_list[1][:-2]
     publickey = scriptsig_asm_list[3]
     return ecdsa_verify(sign, msg, publickey)
     
