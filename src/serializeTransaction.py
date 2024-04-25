@@ -26,8 +26,16 @@ def verifyTx(transaction: Transaction):
     for i in range(len(transaction.vin)):
         if (transaction.vin[i].prevout.scriptpubkey_type == "p2pkh"):
             ans = ans and not verifyP2PKHTx(transaction, i)
+        elif (transaction.vin[i].prevout.scriptpubkey_type == "v0_p2wpkh"):
+            ans = ans and not verifyP2WPKHTx(transaction, i)
 
     return not ans
+
+def verifyP2WPKHTx(transaction: Transaction, i):
+    msg = getP2WPKHMessage(transaction, i)
+    sign = transaction.vin[i].witness[0][:-2]
+    publickey = transaction.vin[i].witness[1]
+    return ecdsa_verify(sign, msg, publickey)
     
 
 def verifyP2PKHTx(transaction: Transaction, i):
@@ -36,6 +44,31 @@ def verifyP2PKHTx(transaction: Transaction, i):
     sign = scriptsig_asm_list[1][:-2]
     publickey = scriptsig_asm_list[3]
     return ecdsa_verify(sign, msg, publickey)
+
+def getP2WPKHMessage(transaction: Transaction, inputtxno):
+    version = "0" + str(transaction.version) + "000000"
+    inputs = ""
+    sequences = ""
+    for vin_data_idx in range(len(transaction.vin)):
+        inputs += reverse_tx_id(transaction.vin[vin_data_idx].txid)
+        inputs += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000" 
+        sequences += "ffffffff"
+    hashinputs = calculate_sha256(calculate_sha256(inputs))
+    hashsequences = calculate_sha256(calculate_sha256(sequences))
+    input = reverse_tx_id(transaction.vin[inputtxno].txid) + add_padding_front(str(remove_first_two_letters(hex(transaction.vin[inputtxno].vout))), 2) + "000000"
+    hashinput = calculate_sha256(input)
+    scriptcode = "1976a914" + transaction.vin[inputtxno].prevout.scriptpubkey_asm.split()[2] + "88ac"
+    amount = add_padding(reverse_tx_id(format(transaction.vin[inputtxno].prevout.value, 'x')))
+    sequence = "ffffffff"
+    outputs = ""
+    for vout_data in transaction.vout:
+        outputs += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
+        outputs += remove_first_two_letters(hex(int(len(vout_data.scriptpubkey) / 2)))
+        outputs += vout_data.scriptpubkey
+    hashoutputs = calculate_sha256(calculate_sha256(outputs))
+    locktime = reverse_tx_id(add_padding_front(remove_first_two_letters(hex(transaction.locktime))))
+    preimage = version + hashinputs + hashsequences + input + scriptcode + amount + sequence + hashoutputs + locktime + "01000000"
+    return calculate_sha256(preimage)
     
 def getLegacyMessage(transaction: Transaction, inputtxno):
     rawTxData = ""
@@ -99,3 +132,4 @@ def calculate_sha256(hex_input):
     sha256_hash = hashlib.sha256(input_bytes).hexdigest()
     
     return sha256_hash
+
