@@ -6,6 +6,11 @@ from blockheader import generateBlockHeader, calculateMerkleRoot
 from coinbase import generateCoinbaseTx
 folder_path = "mempool"
 
+# def isLegacy(tx: Transaction):
+#     for i in range(len(tx.vin)):
+#         if (tx.vin[i].prevout.scriptpubkey_type == "p2p")
+#     tx.vin[0].prevout.scriptpubkey_type == "p2pkh"
+
 def validateMempoolTransactions():
     f = True
     d = defaultdict(int)
@@ -33,7 +38,7 @@ def validateMempoolTransactions():
                     sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                     if (sfilename == filename):
                         if verifyTx(Transaction(data)):
-                            if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
+                            if (len(Transaction(data).vin)) and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(reverse_tx_id(txId))
                                 if (cnt > 20):
