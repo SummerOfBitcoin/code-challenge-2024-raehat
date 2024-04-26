@@ -8,7 +8,7 @@ def generateCoinbaseTx():
     rawTx += "04233fa04e028b12"
     rawTx += "ffffffff"
     rawTx += "01"
-    rawTx += "28278016"
+    rawTx += "00000000"
     rawTx += "43"
     rawTx += "41047eda6bd04fb27cab6e7c28c99b94977f073e912f25d1ff7165d9c95cd9bbe6da7e7ad7f2acb09e0ced91705f7616af53bee51a238b7dc527f2be0aa60469d140ac"
     rawTx += "00000000"
