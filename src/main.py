@@ -19,24 +19,25 @@ def validateMempoolTransactions():
     
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
-                data = file.read()
-                txData = serializedTransaction(Transaction(data))
-                try:
-                    bytes.fromhex(txData)
-                except Exception as e:
-                    continue
-                txId = calculate_sha256(calculate_sha256(txData))
-                sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
-                if (sfilename == filename):
-                    if verifyTx(Transaction(data)):
-                        verifiedTxList.append(reverse_tx_id(txId))
-                        if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
-                            wtxids.append(reverse_tx_id(txId))
-                        elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
-                            wtxids.append(calculateWTXID(Transaction(data)))
-                        cnt += 1
-                    else:
-                        pnt += 1
+                if filename == "0a8b21af1cfcc26774df1f513a72cd362a14f5a598ec39d915323078efb5a240.json" or filename == "fd5b2900e4a5177609fe449540814d02efe7eed61dc06113a993dd25446d04d3.json":
+                    data = file.read()
+                    txData = serializedTransaction(Transaction(data))
+                    try:
+                        bytes.fromhex(txData)
+                    except Exception as e:
+                        continue
+                    txId = calculate_sha256(calculate_sha256(txData))
+                    sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
+                    if (sfilename == filename):
+                        if verifyTx(Transaction(data)):
+                            verifiedTxList.append(reverse_tx_id(txId))
+                            if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
+                                wtxids.append(reverse_tx_id(txId))
+                            elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                                wtxids.append(calculateWTXID(Transaction(data)))
+                            cnt += 1
+                        else:
+                            pnt += 1
     # print(cnt)
     # print(pnt)
     return (verifiedTxList, wtxids)
