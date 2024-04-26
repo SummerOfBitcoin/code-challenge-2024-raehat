@@ -7,7 +7,7 @@ def generateBlockHeader(list, merkleRoot, nonceInt):
     timeStamp = reverse_tx_id(format(int(time.time()), 'x'))
     bits = "1f00ffff"
     nonce = add_padding_front(reverse_tx_id(format(nonceInt, 'x')), 8)
-    return version + prevBlock + reverse_tx_id(merkleRoot) + timeStamp + bits + nonce
+    return version + prevBlock + reverse_tx_id(merkleRoot) + timeStamp + reverse_tx_id(bits) + nonce
 
 def calculateMerkleRoot(list):
     newList = []
