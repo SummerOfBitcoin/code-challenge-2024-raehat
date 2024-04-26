@@ -38,7 +38,7 @@ def validateMempoolTransactions():
                     sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                     if (sfilename == filename):
                         if verifyTx(Transaction(data)):
-                            if (len(Transaction(data).vin)) and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
+                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(reverse_tx_id(txId))
                                 if (cnt > 20):
@@ -51,7 +51,7 @@ def validateMempoolTransactions():
                             cnt += 1
                         else:
                             pnt += 1
-            if (cnt > 10):
+            if (cnt > 50):
                 break
             
                     
