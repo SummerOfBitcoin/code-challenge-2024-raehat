@@ -38,8 +38,8 @@ def validateMempoolTransactions():
                                 wtxids.append(reverse_tx_id(txId))
                                 if (cnt > 20):
                                     print(filename)
-                            elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
-                                wtxids.append(calculateWTXID(Transaction(data)))
+                            # elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                            #     wtxids.append(calculateWTXID(Transaction(data)))
                                 # if (cnt > 20):
                                 #     print(filename)
                             cnt += 1
