@@ -10,6 +10,8 @@ def generateBlockHeader(list, merkleRoot, nonceInt):
     return version + prevBlock + reverse_tx_id(merkleRoot) + timeStamp + reverse_tx_id(bits) + nonce
 
 def calculateMerkleRoot(list):
+    if (len(list) == 1):
+        return list[0]
     newList = []
     i = 0
     while i < len(list) - 1:
@@ -19,6 +21,4 @@ def calculateMerkleRoot(list):
     if (len(list) % 2 == 1):
         item = reverse_tx_id(calculate_sha256(calculate_sha256(reverse_tx_id(list[-1]) + reverse_tx_id(list[-1]))))
         newList.append(item)
-    if (len(newList) == 1):
-        return newList[0]
     return calculateMerkleRoot(newList)
