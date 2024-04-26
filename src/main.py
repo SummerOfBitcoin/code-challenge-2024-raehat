@@ -20,7 +20,7 @@ def validateMempoolTransactions():
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
                 if filename == "fd5b2900e4a5177609fe449540814d02efe7eed61dc06113a993dd25446d04d3.json":
-                # if False:
+                # if True:
                     data = file.read()
                     txData = serializedTransaction(Transaction(data))
                     try:
@@ -47,7 +47,7 @@ def mineBlock():
     list = []
     vmt = validateMempoolTransactions()
     print('lol: ', calculateMerkleRoot(vmt[1]))
-    mrcoinbase = calculate_sha256(calculate_sha256(calculateMerkleRoot(vmt[1]) + "0000000000000000000000000000000000000000000000000000000000000000"))
+    mrcoinbase = calculate_sha256(calculate_sha256(reverse_tx_id(calculateMerkleRoot(vmt[1])) + "0000000000000000000000000000000000000000000000000000000000000000"))
     cb = generateCoinbaseTx(mrcoinbase)
     list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb[1]))))
 
@@ -68,7 +68,7 @@ def mineBlock():
         file.write(cb[0] + '\n')
         for element in list:
             file.write(element + '\n')
-    # print(vmt[1])
     print(vmt[1])
+    # print(cb)
 
 print(mineBlock())
