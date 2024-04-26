@@ -51,7 +51,7 @@ def validateMempoolTransactions():
                             cnt += 1
                         else:
                             pnt += 1
-            if (cnt > 50):
+            if (cnt > 200):
                 break
             
                     
