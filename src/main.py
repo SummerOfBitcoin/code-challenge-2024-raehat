@@ -56,7 +56,6 @@ def mineBlock():
     with open(file_path, 'w') as file:
         file.write(blockHeaderData + '\n')
         file.write(generateCoinbaseTx() + '\n')
-        file.write(reverse_tx_id(calculate_sha256(calculate_sha256(generateCoinbaseTx()))) + '\n')
         for element in list:
             file.write(element + '\n')
 
