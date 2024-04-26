@@ -19,8 +19,8 @@ def validateMempoolTransactions():
     
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
-                # if True:
-                if filename == "ff907975dc0cfa299e908e5fba6df56c764866d9a9c22828824c28b8e4511320.json":
+                if True:
+                # if filename == "ff907975dc0cfa299e908e5fba6df56c764866d9a9c22828824c28b8e4511320.json":
                     #     cnt += 1
                     #     continue
                     data = file.read()
@@ -46,8 +46,8 @@ def validateMempoolTransactions():
                             cnt += 1
                         else:
                             pnt += 1
-            # if (cnt > 29):
-            #     break
+            if (cnt > 29):
+                break
             
                     
     # print(cnt)
