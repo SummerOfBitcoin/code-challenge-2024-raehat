@@ -46,13 +46,14 @@ def mineBlock():
         if (int(blockHeader, 16) < int("0000ffff00000000000000000000000000000000000000000000000000000000", 16)):
             break
         nonce += 1
+    print(blockHeaderData)
 
-    file_path = "../output.txt"
+    file_path = "output.txt"
     with open(file_path, 'w') as file:
-        file.write(blockHeaderData)
-        file.write(generateCoinbaseTx())
-        file.write(reverse_tx_id(calculate_sha256(calculate_sha256(generateCoinbaseTx()))))
+        file.write(blockHeaderData + '\n')
+        file.write(generateCoinbaseTx() + '\n')
+        file.write(reverse_tx_id(calculate_sha256(calculate_sha256(generateCoinbaseTx()))) + '\n')
         for element in list:
-            file.write(element)
+            file.write(element + '\n')
 
 print(mineBlock())
