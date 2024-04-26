@@ -37,6 +37,8 @@ def validateMempoolTransactions():
     return verifiedTxList
 
 def mineBlock():
+    list = []
+    list.append(generateCoinbaseTx())
     list = validateMempoolTransactions()
     merkleRoot = calculateMerkleRoot(list)
     nonce = 0
