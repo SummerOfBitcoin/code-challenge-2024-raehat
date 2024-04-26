@@ -23,7 +23,7 @@ def serializedTransaction(transaction: Transaction):
 
 def calculateWTXID(transaction: Transaction):
     rawTxData = ""
-    rawTxData += "010000000001"
+    rawTxData += "0" + str(transaction.version) +"000000" + "0001"
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vin)))), 2)
     for vin_data_idx in range(len(transaction.vin)):
         rawTxData += reverse_tx_id(transaction.vin[vin_data_idx].txid)

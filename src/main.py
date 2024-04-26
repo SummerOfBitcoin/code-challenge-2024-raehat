@@ -34,6 +34,8 @@ def validateMempoolTransactions():
                             if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
                                 wtxids.append(reverse_tx_id(txId))
                             elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                                print(txData)
+                                print(calculateWTXID(Transaction(data)))
                                 wtxids.append(calculateWTXID(Transaction(data)))
                             cnt += 1
                         else:
@@ -67,7 +69,7 @@ def mineBlock():
         file.write(cb[0] + '\n')
         for element in list:
             file.write(element + '\n')
-    print(vmt[1])
-    print(cb)
+    # print(vmt[1])
+    # print(cb)
 
 print(mineBlock())
