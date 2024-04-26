@@ -19,30 +19,32 @@ def validateMempoolTransactions():
     
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
-                if filename != "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
-                # if True:
-                    data = file.read()
-                    txData = serializedTransaction(Transaction(data))
-                    try:
-                        bytes.fromhex(txData)
-                    except Exception as e:
-                        continue
-                    txId = calculate_sha256(calculate_sha256(txData))
-                    sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
-                    if (sfilename == filename):
-                        if verifyTx(Transaction(data)):
-                            verifiedTxList.append(reverse_tx_id(txId))
-                            if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
-                                wtxids.append(reverse_tx_id(txId))
-                                if (cnt > 20):
-                                    print(filename)
-                            elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
-                                wtxids.append(calculateWTXID(Transaction(data)))
-                                if (cnt > 20):
-                                    print(filename)
-                            cnt += 1
-                        else:
-                            pnt += 1
+                # if filename != "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
+                if filename == "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
+                    cnt += 1
+                    break
+                data = file.read()
+                txData = serializedTransaction(Transaction(data))
+                try:
+                    bytes.fromhex(txData)
+                except Exception as e:
+                    continue
+                txId = calculate_sha256(calculate_sha256(txData))
+                sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
+                if (sfilename == filename):
+                    if verifyTx(Transaction(data)):
+                        verifiedTxList.append(reverse_tx_id(txId))
+                        if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
+                            wtxids.append(reverse_tx_id(txId))
+                            if (cnt > 20):
+                                print(filename)
+                        elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                            wtxids.append(calculateWTXID(Transaction(data)))
+                            if (cnt > 20):
+                                print(filename)
+                        cnt += 1
+                    else:
+                        pnt += 1
             if (cnt > 30):
                 break
             
