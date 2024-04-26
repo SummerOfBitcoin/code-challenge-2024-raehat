@@ -43,7 +43,7 @@ def validateMempoolTransactions():
                             #     wtxids.append(reverse_tx_id(txId))
                             #     if (cnt > 20):
                             #         print(filename)
-                            if (len(Transaction(data).vin)) == 1 or Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh":
+                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh":
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(calculateWTXID(Transaction(data)))
                                 # if (cnt > 20):
