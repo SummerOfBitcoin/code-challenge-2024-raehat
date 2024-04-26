@@ -19,8 +19,8 @@ def validateMempoolTransactions():
     
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
-                # if filename != "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
-                if filename == "036b0ec9d18d0b23f77eaeafe5b7c48117ce48f8f73b26fd747e0a3e77912eb9.json":
+                if True:
+                # if filename == "036b0ec9d18d0b23f77eaeafe5b7c48117ce48f8f73b26fd747e0a3e77912eb9.json":
                     #     cnt += 1
                     #     continue
                     data = file.read()
