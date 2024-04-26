@@ -39,7 +39,7 @@ def validateMempoolTransactions():
                         cnt += 1
                     else:
                         pnt += 1
-            if (cnt > 40):
+            if (cnt > 30):
                 break
             
                     
