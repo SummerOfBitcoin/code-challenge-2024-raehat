@@ -37,8 +37,8 @@ def validateMempoolTransactions():
                         cnt += 1
                     else:
                         pnt += 1
-    print(cnt)
-    print(pnt)
+    # print(cnt)
+    # print(pnt)
     return (verifiedTxList, wtxids)
 
 def mineBlock():
@@ -51,7 +51,6 @@ def mineBlock():
     newTxs = vmt[0]
     list += newTxs
     merkleRoot = calculateMerkleRoot(list)
-    print(merkleRoot)
     nonce = 0
     while (True):
         blockHeaderData = generateBlockHeader(list, merkleRoot, nonce)
@@ -59,7 +58,6 @@ def mineBlock():
         if (int(blockHeader, 16) < int("0000ffff00000000000000000000000000000000000000000000000000000000", 16)):
             break
         nonce += 1
-    print(blockHeaderData)
 
     file_path = "output.txt"
     with open(file_path, 'w') as file:
@@ -67,5 +65,7 @@ def mineBlock():
         file.write(cb + '\n')
         for element in list:
             file.write(element + '\n')
+    print(vmt[1])
+    print(cb)
 
 print(mineBlock())
