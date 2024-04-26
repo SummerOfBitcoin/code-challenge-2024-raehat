@@ -4,7 +4,7 @@ from transaction import Transaction
 from serializeTransaction import serializedTransaction, calculate_sha256, reverse_tx_id, verifyTx
 from blockheader import generateBlockHeader, calculateMerkleRoot
 from coinbase import generateCoinbaseTx
-folder_path = "../mempool"
+folder_path = "mempool"
 
 def validateMempoolTransactions():
     f = True
