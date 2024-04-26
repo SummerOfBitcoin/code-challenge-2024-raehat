@@ -28,7 +28,7 @@ def validateMempoolTransactions():
                 sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                 if (sfilename == filename):
                     if verifyTx(Transaction(data)):
-                        verifiedTxList.append(txId)
+                        verifiedTxList.append(reverse_tx_id(txId))
                         cnt += 1
                     else:
                         pnt += 1
