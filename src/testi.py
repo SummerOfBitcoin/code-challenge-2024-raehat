@@ -13,8 +13,13 @@ def validateMempoolTransactions():
     
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
-                if (filename == "fd5b2900e4a5177609fe449540814d02efe7eed61dc06113a993dd25446d04d3.json"):
+                if (filename == "0426c1f32a195a80386bf842703356958121a28c562e5757e2d012818f667682.json"):
                     data = file.read()
                     print(calculateWTXID(Transaction(data)))
+                # data = file.read()
+                # if (len(Transaction(data).vin) > 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                #     print(filename)
+                #     break
+
 
 validateMempoolTransactions()

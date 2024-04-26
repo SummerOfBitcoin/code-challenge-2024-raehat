@@ -30,9 +30,9 @@ def validateMempoolTransactions():
                 if (sfilename == filename):
                     if verifyTx(Transaction(data)):
                         verifiedTxList.append(reverse_tx_id(txId))
-                        if (Transaction(data).vin[i].prevout.scriptpubkey_type == "p2pkh"):
+                        if (Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh"):
                             wtxids.append(reverse_tx_id(txId))
-                        elif (Transaction(data).vin[i].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                        elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
                             wtxids.append(calculateWTXID(Transaction(data)))
                         cnt += 1
                     else:
@@ -43,11 +43,11 @@ def validateMempoolTransactions():
 
 def mineBlock():
     list = []
+    vmt = validateMempoolTransactions()
     mrcoinbase = calculate_sha256(calculate_sha256(calculateMerkleRoot(vmt[1]) + "0000000000000000000000000000000000000000000000000000000000000000"))
     cb = generateCoinbaseTx(mrcoinbase)
     list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb))))
-    
-    vmt = validateMempoolTransactions()
+
     newTxs = vmt[0]
     list += newTxs
     merkleRoot = calculateMerkleRoot(list)
