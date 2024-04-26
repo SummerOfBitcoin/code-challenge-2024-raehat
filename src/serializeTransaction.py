@@ -21,6 +21,29 @@ def serializedTransaction(transaction: Transaction):
 
     return rawTxData
 
+def calculateWTXID(transaction: Transaction):
+    rawTxData = ""
+    rawTxData += "010000000001"
+    rawTxData += "0" + str(len(transaction.vin))
+    for vin_data_idx in range(len(transaction.vin)):
+        rawTxData += reverse_tx_id(transaction.vin[vin_data_idx].txid)
+        rawTxData += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000"
+        rawTxData += "00"
+        rawTxData += "ffffffff"
+    rawTxData += "0" + str(len(transaction.vout))
+    for vout_data in transaction.vout:
+        rawTxData += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
+        rawTxData += remove_first_two_letters(hex(int(len(vout_data.scriptpubkey) / 2)))
+        rawTxData += vout_data.scriptpubkey
+    for vin_data in transaction.vin:
+        rawTxData += "0" + str(len(vin_data.witness))
+        for witness_data in vin_data.witness:
+            rawTxData += remove_first_two_letters(hex(int(len(witness_data) / 2)))
+            rawTxData += witness_data
+    rawTxData += reverse_tx_id(add_padding_front(remove_first_two_letters(hex(transaction.locktime))))
+
+    return reverse_tx_id(calculate_sha256(calculate_sha256(rawTxData)))
+
 def verifyTx(transaction: Transaction):
     ans = True
     for i in range(len(transaction.vin)):

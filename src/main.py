@@ -1,7 +1,7 @@
 import os
 from collections import defaultdict
 from transaction import Transaction
-from serializeTransaction import serializedTransaction, calculate_sha256, reverse_tx_id, verifyTx
+from serializeTransaction import serializedTransaction, calculate_sha256, reverse_tx_id, verifyTx, calculateWTXID
 from blockheader import generateBlockHeader, calculateMerkleRoot
 from coinbase import generateCoinbaseTx
 folder_path = "mempool"
@@ -13,6 +13,7 @@ def validateMempoolTransactions():
     pnt = 0
     ns = set()
     verifiedTxList = []
+    wtxids = ["0000000000000000000000000000000000000000000000000000000000000000"]
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
     
@@ -29,17 +30,25 @@ def validateMempoolTransactions():
                 if (sfilename == filename):
                     if verifyTx(Transaction(data)):
                         verifiedTxList.append(reverse_tx_id(txId))
+                        if (Transaction(data).vin[i].prevout.scriptpubkey_type == "p2pkh"):
+                            wtxids.append(reverse_tx_id(txId))
+                        elif (Transaction(data).vin[i].prevout.scriptpubkey_type == "v0_p2wpkh"):
+                            wtxids.append(calculateWTXID(Transaction(data)))
                         cnt += 1
                     else:
                         pnt += 1
     print(cnt)
     print(pnt)
-    return verifiedTxList
+    return (verifiedTxList, wtxids)
 
 def mineBlock():
     list = []
-    list.append(reverse_tx_id(calculate_sha256(calculate_sha256(generateCoinbaseTx()))))
-    newTxs = validateMempoolTransactions()
+    mrcoinbase = calculate_sha256(calculate_sha256(calculateMerkleRoot(vmt[1]) + "0000000000000000000000000000000000000000000000000000000000000000"))
+    cb = generateCoinbaseTx(mrcoinbase)
+    list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb))))
+    
+    vmt = validateMempoolTransactions()
+    newTxs = vmt[0]
     list += newTxs
     merkleRoot = calculateMerkleRoot(list)
     print(merkleRoot)
@@ -55,7 +64,7 @@ def mineBlock():
     file_path = "output.txt"
     with open(file_path, 'w') as file:
         file.write(blockHeaderData + '\n')
-        file.write(generateCoinbaseTx() + '\n')
+        file.write(cb + '\n')
         for element in list:
             file.write(element + '\n')
 
