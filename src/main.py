@@ -47,7 +47,7 @@ def mineBlock():
             break
         nonce += 1
 
-    file_path = "output.txt"
+    file_path = "../output.txt"
     with open(file_path, 'w') as file:
         file.write(blockHeaderData)
         file.write(generateCoinbaseTx())
