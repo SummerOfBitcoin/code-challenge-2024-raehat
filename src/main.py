@@ -40,8 +40,8 @@ def validateMempoolTransactions():
                                 print(filename)
                         elif (Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh"):
                             wtxids.append(calculateWTXID(Transaction(data)))
-                            if (cnt > 20):
-                                print(filename)
+                            # if (cnt > 20):
+                            #     print(filename)
                         cnt += 1
                     else:
                         pnt += 1
@@ -56,7 +56,7 @@ def validateMempoolTransactions():
 def mineBlock():
     list = []
     vmt = validateMempoolTransactions()
-    print('merkleroot: ', calculateMerkleRoot(vmt[1]))
+    print('merkleroot: ', reverse_tx_id(calculateMerkleRoot(vmt[1])))
     print('merklecomm: ', calculate_sha256(calculate_sha256(reverse_tx_id(calculateMerkleRoot(vmt[1])) + "0000000000000000000000000000000000000000000000000000000000000000")))
     mrcoinbase = calculate_sha256(calculate_sha256(reverse_tx_id(calculateMerkleRoot(vmt[1])) + "0000000000000000000000000000000000000000000000000000000000000000"))
     cb = generateCoinbaseTx(mrcoinbase)
@@ -80,6 +80,6 @@ def mineBlock():
         for element in list:
             file.write(element + '\n')
     print(vmt[1])
-    # print(cb)
+    print(cb[0])
 
 print(mineBlock())
