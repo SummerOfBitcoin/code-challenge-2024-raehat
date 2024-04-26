@@ -42,6 +42,7 @@ def mineBlock():
     newTxs = validateMempoolTransactions()
     list += newTxs
     merkleRoot = calculateMerkleRoot(list)
+    print(merkleRoot)
     nonce = 0
     while (True):
         blockHeaderData = generateBlockHeader(list, merkleRoot, nonce)
