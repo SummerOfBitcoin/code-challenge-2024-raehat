@@ -56,7 +56,8 @@ def validateMempoolTransactions():
 def mineBlock():
     list = []
     vmt = validateMempoolTransactions()
-    print('lol: ', calculateMerkleRoot(vmt[1]))
+    print('merkleroot: ', calculateMerkleRoot(vmt[1]))
+    print('merklecomm: ', calculate_sha256(calculate_sha256(reverse_tx_id(calculateMerkleRoot(vmt[1])) + "0000000000000000000000000000000000000000000000000000000000000000")))
     mrcoinbase = calculate_sha256(calculate_sha256(reverse_tx_id(calculateMerkleRoot(vmt[1])) + "0000000000000000000000000000000000000000000000000000000000000000"))
     cb = generateCoinbaseTx(mrcoinbase)
     list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb[1]))))
