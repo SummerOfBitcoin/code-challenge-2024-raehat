@@ -47,7 +47,7 @@ def mineBlock():
     vmt = validateMempoolTransactions()
     mrcoinbase = calculate_sha256(calculate_sha256(calculateMerkleRoot(vmt[1]) + "0000000000000000000000000000000000000000000000000000000000000000"))
     cb = generateCoinbaseTx(mrcoinbase)
-    list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb))))
+    list.append(reverse_tx_id(calculate_sha256(calculate_sha256(cb[1]))))
 
     newTxs = vmt[0]
     list += newTxs
@@ -63,7 +63,7 @@ def mineBlock():
     file_path = "output.txt"
     with open(file_path, 'w') as file:
         file.write(blockHeaderData + '\n')
-        file.write(cb + '\n')
+        file.write(cb[0] + '\n')
         for element in list:
             file.write(element + '\n')
     print(vmt[1])
