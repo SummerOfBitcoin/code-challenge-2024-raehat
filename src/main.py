@@ -20,9 +20,9 @@ def validateMempoolTransactions():
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
                 # if filename != "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
-                if filename == "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
-                    cnt += 1
-                    continue
+                # if filename == "034de95e720c426f0a81bae3b58168f763420d07e0128ea583b69d2438068e0f.json":
+                #     cnt += 1
+                #     continue
                 data = file.read()
                 txData = serializedTransaction(Transaction(data))
                 try:
