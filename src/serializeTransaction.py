@@ -5,7 +5,7 @@ import hashlib
 def serializedTransaction(transaction: Transaction):
     rawTxData = ""
     rawTxData += "0" + str(transaction.version) + "000000"
-    rawTxData += "0" + str(len(transaction.vin))
+    rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vin)))), 2)
     for vin_data in transaction.vin:
         rawTxData += reverse_tx_id(vin_data.txid)
         rawTxData += add_padding_front(str(remove_first_two_letters(hex(vin_data.vout))), 2) + "000000" 
@@ -27,7 +27,7 @@ def calculateWTXID(transaction: Transaction):
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vin)))), 2)
     for vin_data_idx in range(len(transaction.vin)):
         rawTxData += reverse_tx_id(transaction.vin[vin_data_idx].txid)
-        rawTxData += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000"
+        rawTxData += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 8))
         rawTxData += "00"
         rawTxData += reverse_tx_id(add_padding_front(format(transaction.vin[vin_data_idx].sequence, 'x')))
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vout)))), 2)
@@ -75,7 +75,7 @@ def getP2WPKHMessage(transaction: Transaction, inputtxno):
     sequences = ""
     for vin_data_idx in range(len(transaction.vin)):
         inputs += reverse_tx_id(transaction.vin[vin_data_idx].txid)
-        inputs += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000" 
+        inputs += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 8) )
         sequences += reverse_tx_id(add_padding_front(format(transaction.vin[vin_data_idx].sequence, 'x')))
     hashinputs = calculate_sha256(calculate_sha256(inputs))
     hashsequences = calculate_sha256(calculate_sha256(sequences))
@@ -97,10 +97,10 @@ def getP2WPKHMessage(transaction: Transaction, inputtxno):
 def getLegacyMessage(transaction: Transaction, inputtxno):
     rawTxData = ""
     rawTxData += "0" + str(transaction.version) + "000000"
-    rawTxData += "0" + str(len(transaction.vin))
+    rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vin)))), 2)
     for vin_data_idx in range(len(transaction.vin)):
         rawTxData += reverse_tx_id(transaction.vin[vin_data_idx].txid)
-        rawTxData += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000" 
+        rawTxData += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 8) )
         if vin_data_idx == inputtxno:
             rawTxData += add_padding_front(remove_first_two_letters(hex(int(len(transaction.vin[vin_data_idx].prevout.scriptpubkey) / 2))), 2)
         else:
