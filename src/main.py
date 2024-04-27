@@ -53,6 +53,7 @@ def validateMempoolTransactions():
                             pnt += 1
                     # else:
                     #     print("not equal: ", filename, sfilename)
+                    #     print(txData)
                     #     break
             # if (cnt > 50):
             #     break
@@ -88,7 +89,7 @@ def mineBlock():
         file.write(cb[0] + '\n')
         for element in list:
             file.write(element + '\n')
-    print(vmt[1])
-    print(cb[0])
+    # print(vmt[1])
+    # print(cb[0])
 
 print(mineBlock())
