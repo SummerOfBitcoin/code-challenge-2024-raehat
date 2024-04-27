@@ -11,7 +11,7 @@ def serializedTransaction(transaction: Transaction):
         rawTxData += add_padding_front(str(remove_first_two_letters(hex(vin_data.vout))), 2) + "000000" 
         rawTxData += add_padding_front(remove_first_two_letters(hex(int(len(vin_data.scriptsig) / 2))), 2)
         rawTxData += vin_data.scriptsig
-        rawTxData += "ffffffff"
+        rawTxData += reverse_tx_id(format(vin_data.sequence, 'x'))
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vout)))), 2)
     for vout_data in transaction.vout:
         rawTxData += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
@@ -29,7 +29,7 @@ def calculateWTXID(transaction: Transaction):
         rawTxData += reverse_tx_id(transaction.vin[vin_data_idx].txid)
         rawTxData += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000"
         rawTxData += "00"
-        rawTxData += "ffffffff"
+        rawTxData += reverse_tx_id(format(transaction.vin[vin_data_idx].sequence, 'x'))
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vout)))), 2)
     for vout_data in transaction.vout:
         rawTxData += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
@@ -76,14 +76,14 @@ def getP2WPKHMessage(transaction: Transaction, inputtxno):
     for vin_data_idx in range(len(transaction.vin)):
         inputs += reverse_tx_id(transaction.vin[vin_data_idx].txid)
         inputs += add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 2) + "000000" 
-        sequences += "ffffffff"
+        sequences += reverse_tx_id(format(transaction.vin[vin_data_idx].sequence, 'x'))
     hashinputs = calculate_sha256(calculate_sha256(inputs))
     hashsequences = calculate_sha256(calculate_sha256(sequences))
     input = reverse_tx_id(transaction.vin[inputtxno].txid) + add_padding_front(str(remove_first_two_letters(hex(transaction.vin[inputtxno].vout))), 2) + "000000"
     hashinput = calculate_sha256(input)
     scriptcode = "1976a914" + transaction.vin[inputtxno].prevout.scriptpubkey_asm.split()[2] + "88ac"
     amount = add_padding(reverse_tx_id(format(transaction.vin[inputtxno].prevout.value, 'x')))
-    sequence = "ffffffff"
+    sequence = reverse_tx_id(format(transaction.vin[vin_data_idx].sequence, 'x'))
     outputs = ""
     for vout_data in transaction.vout:
         outputs += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
@@ -109,7 +109,7 @@ def getLegacyMessage(transaction: Transaction, inputtxno):
             rawTxData += transaction.vin[vin_data_idx].prevout.scriptpubkey
         else:
             rawTxData += ""
-        rawTxData += "ffffffff"
+        rawTxData += reverse_tx_id(format(transaction.vin[vin_data_idx].sequence, 'x'))
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vout)))), 2)
     for vout_data in transaction.vout:
         rawTxData += add_padding(reverse_tx_id(remove_first_two_letters(hex(vout_data.value))))
