@@ -11,6 +11,12 @@ folder_path = "mempool"
 #         if (tx.vin[i].prevout.scriptpubkey_type == "p2p")
 #     tx.vin[0].prevout.scriptpubkey_type == "p2pkh"
 
+def txIsP2WPKH(tx: Transaction):
+    for vin_data in tx.vin:
+        if vin_data.prevout.scriptpubkey_type != "v0_p2wpkh":
+            return False
+    return True
+
 def validateMempoolTransactions():
     f = True
     d = defaultdict(int)
@@ -37,14 +43,13 @@ def validateMempoolTransactions():
                     txId = calculate_sha256(calculate_sha256(txData))
                     sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                     if (sfilename == filename):
-                        # if verifyTx(Transaction(data)):
-                        if True:
+                        if verifyTx(Transaction(data)):
                             if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(reverse_tx_id(txId))
                                 # if (cnt > 20):
                                 #     print(filename)
-                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh":
+                            if txIsP2WPKH(Transaction(data)):
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(calculateWTXID(Transaction(data)))
                                 # if (cnt > 20):
