@@ -38,28 +38,27 @@ def validateMempoolTransactions():
                     sfilename = calculate_sha256(reverse_tx_id(txId)) + ".json"
                     if (sfilename == filename):
                         if verifyTx(Transaction(data)):
-                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
+                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh" and len(Transaction(data).vout) < 3:
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(reverse_tx_id(txId))
                                 # if (cnt > 20):
                                 #     print(filename)
-                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh":
+                            if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh" and len(Transaction(data).vout) < 3:
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(calculateWTXID(Transaction(data)))
                                 # if (cnt > 20):
                                 #     print(filename)
-                            cnt += 1
-                        else:
-                            pnt += 1
-                    # else:
-                    #     print("not equal: ", filename, sfilename)
-                    #     print(txData)
+                        cnt += 1
+                    else:
+                        # print("not equal: ", filename, sfilename)
+                        # print(txData)
+                        pnt += 1
             # if (cnt > 50):
             #     break
             
                     
-    # print(cnt)
-    # print(pnt)
+    print(cnt)
+    print(pnt)
     return (verifiedTxList, wtxids)
 
 def mineBlock():
