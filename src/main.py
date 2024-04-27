@@ -54,7 +54,6 @@ def validateMempoolTransactions():
                     # else:
                     #     print("not equal: ", filename, sfilename)
                     #     print(txData)
-                    #     break
             # if (cnt > 50):
             #     break
             

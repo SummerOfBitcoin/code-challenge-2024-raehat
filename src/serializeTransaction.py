@@ -8,7 +8,7 @@ def serializedTransaction(transaction: Transaction):
     rawTxData += add_padding_front(remove_first_two_letters(str(hex(len(transaction.vin)))), 2)
     for vin_data in transaction.vin:
         rawTxData += reverse_tx_id(vin_data.txid)
-        rawTxData += add_padding_front(str(remove_first_two_letters(hex(vin_data.vout))), 2) + "000000" 
+        rawTxData += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(vin_data.vout))), 8))
         rawTxData += add_padding_front(remove_first_two_letters(hex(int(len(vin_data.scriptsig) / 2))), 2)
         rawTxData += vin_data.scriptsig
         rawTxData += reverse_tx_id(add_padding_front(format(vin_data.sequence, 'x')))
@@ -79,7 +79,7 @@ def getP2WPKHMessage(transaction: Transaction, inputtxno):
         sequences += reverse_tx_id(add_padding_front(format(transaction.vin[vin_data_idx].sequence, 'x')))
     hashinputs = calculate_sha256(calculate_sha256(inputs))
     hashsequences = calculate_sha256(calculate_sha256(sequences))
-    input = reverse_tx_id(transaction.vin[inputtxno].txid) + add_padding_front(str(remove_first_two_letters(hex(transaction.vin[inputtxno].vout))), 2) + "000000"
+    input = reverse_tx_id(transaction.vin[inputtxno].txid) + reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[inputtxno].vout))), 8))
     hashinput = calculate_sha256(input)
     scriptcode = "1976a914" + transaction.vin[inputtxno].prevout.scriptpubkey_asm.split()[2] + "88ac"
     amount = add_padding(reverse_tx_id(format(transaction.vin[inputtxno].prevout.value, 'x')))
