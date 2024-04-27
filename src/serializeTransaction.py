@@ -75,7 +75,7 @@ def getP2WPKHMessage(transaction: Transaction, inputtxno):
     sequences = ""
     for vin_data_idx in range(len(transaction.vin)):
         inputs += reverse_tx_id(transaction.vin[vin_data_idx].txid)
-        inputs += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 8) )
+        inputs += reverse_tx_id(add_padding_front(str(remove_first_two_letters(hex(transaction.vin[vin_data_idx].vout))), 8))
         sequences += reverse_tx_id(add_padding_front(format(transaction.vin[vin_data_idx].sequence, 'x')))
     hashinputs = calculate_sha256(calculate_sha256(inputs))
     hashsequences = calculate_sha256(calculate_sha256(sequences))
