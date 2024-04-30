@@ -6,11 +6,6 @@ from blockheader import generateBlockHeader, calculateMerkleRoot
 from coinbase import generateCoinbaseTx
 folder_path = "mempool"
 
-# def isLegacy(tx: Transaction):
-#     for i in range(len(tx.vin)):
-#         if (tx.vin[i].prevout.scriptpubkey_type == "p2p")
-#     tx.vin[0].prevout.scriptpubkey_type == "p2pkh"
-
 def txIsP2WPKH(tx: Transaction):
     for vin_data in tx.vin:
         if vin_data.prevout.scriptpubkey_type != "v0_p2wpkh":
@@ -18,11 +13,6 @@ def txIsP2WPKH(tx: Transaction):
     return True
 
 def validateMempoolTransactions():
-    f = True
-    d = defaultdict(int)
-    cnt = 0
-    pnt = 0
-    ns = set()
     verifiedTxList = []
     wtxids = ["0000000000000000000000000000000000000000000000000000000000000000"]
     for filename in os.listdir(folder_path):
@@ -31,9 +21,6 @@ def validateMempoolTransactions():
         if os.path.isfile(file_path):
             with open(file_path, 'r') as file:
                 if True:
-                # if filename == "ff907975dc0cfa299e908e5fba6df56c764866d9a9c22828824c28b8e4511320.json":
-                    #     cnt += 1
-                    #     continue
                     data = file.read()
                     txData = serializedTransaction(Transaction(data))
                     try:
@@ -47,27 +34,9 @@ def validateMempoolTransactions():
                             if (len(Transaction(data).vin)) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "p2pkh":
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(reverse_tx_id(txId))
-                                # if (cnt > 20):
-                                #     print(filename)
                             if txIsP2WPKH(Transaction(data)):
                                 verifiedTxList.append(reverse_tx_id(txId))
                                 wtxids.append(calculateWTXID(Transaction(data)))
-                                # if (cnt > 20):
-                                #     print(filename)
-                        # elif len(Transaction(data).vin) == 1 and Transaction(data).vin[0].prevout.scriptpubkey_type == "v0_p2wpkh":
-                        #     print(filename)
-                        #     print(txData)
-                        cnt += 1
-                    else:
-                        # print("not equal: ", filename, sfilename)
-                        # print(txData)
-                        pnt += 1
-            # if (cnt > 50):
-            #     break
-            
-                    
-    print(cnt)
-    print(pnt)
     return (verifiedTxList, wtxids)
 
 def mineBlock():
@@ -96,7 +65,5 @@ def mineBlock():
         file.write(cb[0] + '\n')
         for element in list:
             file.write(element + '\n')
-    # print(vmt[1])
-    # print(cb[0])
 
 print(mineBlock())

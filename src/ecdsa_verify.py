@@ -13,6 +13,5 @@ def ecdsa_verify(_sig, _message, _pubKey):
     try:
         ans = vk.verify(sig, message, hashlib.sha256, sigdecode=sigdecode_der)
     except Exception as e:
-        # print(e)
-        0
+        print(e)
     return ans

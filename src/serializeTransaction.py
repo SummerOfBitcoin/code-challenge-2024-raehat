@@ -42,7 +42,6 @@ def calculateWTXID(transaction: Transaction):
             rawTxData += witness_data
     rawTxData += reverse_tx_id(add_padding_front(remove_first_two_letters(hex(transaction.locktime))))
 
-    # return rawTxData
     return reverse_tx_id(calculate_sha256(calculate_sha256(rawTxData)))
 
 def verifyTx(transaction: Transaction):
