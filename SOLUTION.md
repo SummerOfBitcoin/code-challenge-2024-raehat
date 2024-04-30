@@ -66,8 +66,7 @@ generateBlockHeader: This function generates a block header using the provided l
 calculateMerkleRoot: This function calculates the Merkle root of a list of transaction IDs. It iteratively hashes pairs of transaction IDs until a single root hash is obtained, which represents the Merkle root of all transactions in the list.
 
 ## Results and Performance
-My algorithm mines a block within seconds, while some other algorithms may even take minutes to mine a block at this difficulty, 
-You can mine a block within 10 seconds running this code.
+Average time to mine a block: 20 seconds
 
 ## Conclusion
 There is still room for improvement, I am not able to collect maximum fees I can collect, a helper function can be written which helps choose transactions with high fees. 
