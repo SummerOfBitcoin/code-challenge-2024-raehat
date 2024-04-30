@@ -11,6 +11,8 @@ For calculating block header, a value for nonce had to be calculated such that b
 
 At last, I compiled the block header, serialized coinbase transaction and transaction ids of all valid transactions into a block.
 
+![image](https://github.com/SummerOfBitcoin/code-challenge-2024-raehat/assets/77321971/4860e700-0d8f-48c7-9aa0-c2be25a86d02)
+
 ## Implementation Details
 Below is the list of functions I wrote and used within my code.
 
